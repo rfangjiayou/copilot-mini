@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button } from '@tarojs/components';
 import { SentenceItem } from '../types';
+import styles from './SentenceList.module.less'; // 引入 CSS Modules 样式
 
 interface SentenceListProps {
   sentences: SentenceItem[];
@@ -25,14 +26,14 @@ const SentenceList: React.FC<SentenceListProps> = ({ sentences, setSentences, se
   };
 
   return (
-    <View>
-      <Text>语句列表</Text>
-      <View>
+    <View className={styles.container}>
+      <Text className={styles.title}>发现</Text>
+      <View className={styles.list}>
         {sentences.map(sentence => (
-          <View key={sentence.id}>
-            <Text>{sentence.text}</Text>
-            <Button onClick={() => handleEditSentence(sentence.id)}>编辑</Button>
-            <Button onClick={() => handleDeleteSentence(sentence.id)}>删除</Button>
+          <View key={sentence.id} className={styles.sentenceItem}>
+            <Text className={styles.sentenceText}>{sentence.text}</Text>
+            <Button className={styles.editButton} onClick={() => handleEditSentence(sentence.id)}>编辑</Button>
+            <Button className={styles.deleteButton} onClick={() => handleDeleteSentence(sentence.id)}>删除</Button>
           </View>
         ))}
       </View>

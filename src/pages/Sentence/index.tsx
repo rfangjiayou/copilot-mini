@@ -4,6 +4,7 @@ import SentenceList from './components/SentenceList';
 import AddSentence from './components/AddSentence';
 import EditSentence from './components/EditSentence';
 import { SentenceItem } from './types';
+import styles from './index.module.less';
 
 const Sentence: React.FC = () => {
   const [sentences, setSentences] = useState<SentenceItem[]>([]);
@@ -17,7 +18,7 @@ const Sentence: React.FC = () => {
   }, []);
 
   return (
-    <View className='index'>
+    <View className={styles.container}>
       <SentenceList sentences={sentences} setSentences={setSentences} setEditingSentence={setEditingSentence} />
       <AddSentence sentences={sentences} setSentences={setSentences} />
       <EditSentence sentences={sentences} setSentences={setSentences} editingSentence={editingSentence} setEditingSentence={setEditingSentence} />
