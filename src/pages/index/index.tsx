@@ -72,7 +72,6 @@ const Index: React.FC = () => {
         <AtInput
           className={styles.customInput}
           name='newSentence'
-          title='新语句'
           type='text'
           placeholder='输入新语句'
           value={newSentence}

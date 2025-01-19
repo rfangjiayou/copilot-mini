@@ -14,13 +14,16 @@ const config = {
   plugins: [],
   defineConstants: {},
   copy: {
-    patterns: [
-    ],
-    options: {
-    }
+    patterns: [],
+    options: {},
   },
   framework: 'react',
-  compiler: 'webpack5',
+  compiler: {
+    type: 'webpack5',
+    prebundle: {
+      exclude: ['taro-ui']
+    }
+  },
   alias: {
     '@': path.resolve(__dirname, '..', 'src'),
   },
@@ -60,11 +63,11 @@ const config = {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
           namingPattern: 'module', // 转换模式，取值为 global/module
-          generateScopedName: '[name]__[local]___[hash:base64:5]'
-        }
-      }
-    }
-  }
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
+        },
+      },
+    },
+  },
 }
 
 module.exports = function (merge) {
