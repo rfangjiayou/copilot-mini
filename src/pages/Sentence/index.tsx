@@ -7,7 +7,6 @@ import { SentenceItem } from './types';
 
 const Sentence: React.FC = () => {
   const [sentences, setSentences] = useState<SentenceItem[]>([]);
-  const [newSentence, setNewSentence] = useState('');
   const [editingSentence, setEditingSentence] = useState<SentenceItem | null>(null);
 
   useEffect(() => {
@@ -17,47 +16,11 @@ const Sentence: React.FC = () => {
     }
   }, []);
 
-  const handleAddSentence = () => {
-    if (newSentence.trim() === '') return; // 确保不添加空语句
-    const newSentences = [...sentences, { id: Date.now(), text: newSentence }];
-    setSentences(newSentences);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('sentences', JSON.stringify(newSentences));
-    }
-    setNewSentence('');
-  };
-
-  const handleEditSentence = (id: number) => {
-    const sentence = sentences.find(s => s.id === id);
-    if (sentence) {
-      setEditingSentence(sentence);
-    }
-  };
-
-  const handleUpdateSentence = () => {
-    const updatedSentences = sentences.map(s =>
-      s.id === editingSentence?.id ? { ...s, text: editingSentence.text } : s
-    );
-    setSentences(updatedSentences);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('sentences', JSON.stringify(updatedSentences));
-    }
-    setEditingSentence(null);
-  };
-
-  const handleDeleteSentence = (id: number) => {
-    const updatedSentences = sentences.filter(s => s.id !== id);
-    setSentences(updatedSentences);
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem('sentences', JSON.stringify(updatedSentences));
-    }
-  };
-
   return (
     <View className='index'>
-      <SentenceList sentences={sentences} onEdit={handleEditSentence} onDelete={handleDeleteSentence} />
-      <AddSentence newSentence={newSentence} onChange={setNewSentence} onAdd={handleAddSentence} />
-      <EditSentence editingSentence={editingSentence} onChange={(text) => setEditingSentence(editingSentence ? { ...editingSentence, text } : null)} onUpdate={handleUpdateSentence} />
+      <SentenceList sentences={sentences} setSentences={setSentences} setEditingSentence={setEditingSentence} />
+      <AddSentence sentences={sentences} setSentences={setSentences} />
+      <EditSentence sentences={sentences} setSentences={setSentences} editingSentence={editingSentence} setEditingSentence={setEditingSentence} />
     </View>
   );
 };

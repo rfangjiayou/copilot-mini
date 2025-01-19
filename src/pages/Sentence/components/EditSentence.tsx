@@ -4,13 +4,25 @@ import { AtInput } from 'taro-ui';
 import { SentenceItem } from '../types';
 
 interface EditSentenceProps {
+  sentences: SentenceItem[];
+  setSentences: React.Dispatch<React.SetStateAction<SentenceItem[]>>;
   editingSentence: SentenceItem | null;
-  onChange: (value: string) => void;
-  onUpdate: () => void;
+  setEditingSentence: React.Dispatch<React.SetStateAction<SentenceItem | null>>;
 }
 
-const EditSentence: React.FC<EditSentenceProps> = ({ editingSentence, onChange, onUpdate }) => {
+const EditSentence: React.FC<EditSentenceProps> = ({ sentences, setSentences, editingSentence, setEditingSentence }) => {
   if (!editingSentence) return null;
+
+  const handleUpdateSentence = () => {
+    const updatedSentences = sentences.map(s =>
+      s.id === editingSentence.id ? { ...s, text: editingSentence.text } : s
+    );
+    setSentences(updatedSentences);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('sentences', JSON.stringify(updatedSentences));
+    }
+    setEditingSentence(null);
+  };
 
   return (
     <View>
@@ -20,9 +32,9 @@ const EditSentence: React.FC<EditSentenceProps> = ({ editingSentence, onChange, 
         type='text'
         placeholder='编辑语句'
         value={editingSentence.text}
-        onChange={(value) => onChange(value as string)}
+        onChange={(value) => setEditingSentence({ ...editingSentence, text: value as string })}
       />
-      <Button onClick={onUpdate}>更新语句</Button>
+      <Button onClick={handleUpdateSentence}>更新语句</Button>
     </View>
   );
 };

@@ -4,11 +4,26 @@ import { SentenceItem } from '../types';
 
 interface SentenceListProps {
   sentences: SentenceItem[];
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
+  setSentences: React.Dispatch<React.SetStateAction<SentenceItem[]>>;
+  setEditingSentence: React.Dispatch<React.SetStateAction<SentenceItem | null>>;
 }
 
-const SentenceList: React.FC<SentenceListProps> = ({ sentences, onEdit, onDelete }) => {
+const SentenceList: React.FC<SentenceListProps> = ({ sentences, setSentences, setEditingSentence }) => {
+  const handleEditSentence = (id: number) => {
+    const sentence = sentences.find(s => s.id === id);
+    if (sentence) {
+      setEditingSentence(sentence);
+    }
+  };
+
+  const handleDeleteSentence = (id: number) => {
+    const updatedSentences = sentences.filter(s => s.id !== id);
+    setSentences(updatedSentences);
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('sentences', JSON.stringify(updatedSentences));
+    }
+  };
+
   return (
     <View>
       <Text>语句列表</Text>
@@ -16,8 +31,8 @@ const SentenceList: React.FC<SentenceListProps> = ({ sentences, onEdit, onDelete
         {sentences.map(sentence => (
           <li key={sentence.id}>
             {sentence.text}
-            <Button onClick={() => onEdit(sentence.id)}>编辑</Button>
-            <Button onClick={() => onDelete(sentence.id)}>删除</Button>
+            <Button onClick={() => handleEditSentence(sentence.id)}>编辑</Button>
+            <Button onClick={() => handleDeleteSentence(sentence.id)}>删除</Button>
           </li>
         ))}
       </ul>
