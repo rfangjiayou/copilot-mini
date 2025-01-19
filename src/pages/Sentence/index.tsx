@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button } from '@tarojs/components';
-import { AtInput } from 'taro-ui';
-import styles from './index.module.less'; // 引入 CSS Modules 样式
-
-interface SentenceItem {
-  id: number;
-  text: string;
-}
+import { View } from '@tarojs/components';
+import SentenceList from './components/SentenceList';
+import AddSentence from './components/AddSentence';
+import EditSentence from './components/EditSentence';
+import { SentenceItem } from './types';
 
 const Sentence: React.FC = () => {
   const [sentences, setSentences] = useState<SentenceItem[]>([]);
@@ -58,41 +55,9 @@ const Sentence: React.FC = () => {
 
   return (
     <View className='index'>
-      <Text>语句列表</Text>
-      <ul>
-        {sentences.map(sentence => (
-          <li key={sentence.id}>
-            {sentence.text}
-            <Button type='primary' onClick={() => handleEditSentence(sentence.id)}>编辑</Button>
-            <Button type='default' onClick={() => handleDeleteSentence(sentence.id)}>删除</Button>
-          </li>
-        ))}
-      </ul>
-      <View>
-        <AtInput
-          className={styles.customInput}
-          name='newSentence'
-          type='text'
-          placeholder='输入新语句'
-          value={newSentence}
-          onChange={(value) => setNewSentence(value as string)}
-        />
-        <Button type='primary' onClick={handleAddSentence}>新增语句</Button>
-      </View>
-      {editingSentence && (
-        <View>
-          <AtInput
-            className={styles.customInput}
-            name='editingSentence'
-            title='编辑语句'
-            type='text'
-            placeholder='编辑语句'
-            value={editingSentence.text}
-            onChange={(value) => setEditingSentence({ ...editingSentence, text: value as string })}
-          />
-          <Button type='primary' onClick={handleUpdateSentence}>更新语句</Button>
-        </View>
-      )}
+      <SentenceList sentences={sentences} onEdit={handleEditSentence} onDelete={handleDeleteSentence} />
+      <AddSentence newSentence={newSentence} onChange={setNewSentence} onAdd={handleAddSentence} />
+      <EditSentence editingSentence={editingSentence} onChange={(text) => setEditingSentence(editingSentence ? { ...editingSentence, text } : null)} onUpdate={handleUpdateSentence} />
     </View>
   );
 };
