@@ -3,15 +3,15 @@ import { View, Text, Button } from '@tarojs/components';
 import { AtInput } from 'taro-ui';
 import styles from './index.module.less'; // 引入 CSS Modules 样式
 
-interface Sentence {
+interface SentenceItem {
   id: number;
   text: string;
 }
 
-const Index: React.FC = () => {
-  const [sentences, setSentences] = useState<Sentence[]>([]);
+const Sentence: React.FC = () => {
+  const [sentences, setSentences] = useState<SentenceItem[]>([]);
   const [newSentence, setNewSentence] = useState('');
-  const [editingSentence, setEditingSentence] = useState<Sentence | null>(null);
+  const [editingSentence, setEditingSentence] = useState<SentenceItem | null>(null);
 
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
@@ -97,4 +97,4 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+export default Sentence;
