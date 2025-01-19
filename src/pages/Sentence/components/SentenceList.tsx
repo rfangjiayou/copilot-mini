@@ -27,15 +27,15 @@ const SentenceList: React.FC<SentenceListProps> = ({ sentences, setSentences, se
   return (
     <View>
       <Text>语句列表</Text>
-      <ul>
+      <View>
         {sentences.map(sentence => (
-          <li key={sentence.id}>
-            {sentence.text}
+          <View key={sentence.id}>
+            <Text>{sentence.text}</Text>
             <Button onClick={() => handleEditSentence(sentence.id)}>编辑</Button>
             <Button onClick={() => handleDeleteSentence(sentence.id)}>删除</Button>
-          </li>
+          </View>
         ))}
-      </ul>
+      </View>
     </View>
   );
 };
